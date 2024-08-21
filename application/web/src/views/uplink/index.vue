@@ -139,66 +139,70 @@ export default {
   },
   methods: {
     submittracedata() {
-      console.log(this.tracedata)
-      const loading = this.$loading({
-        lock: true,
-        text: '数据上链中...',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
+  console.log(this.tracedata)
+  const loading = this.$loading({
+    lock: true,
+    text: '数据上链中...',
+    spinner: 'el-icon-loading',
+    background: 'rgba(0, 0, 0, 0.7)'
+  })
+  
+  var formData = new FormData()
+
+  // 仅在非"原料商"情况下附加溯源码
+  if (this.userType !== '原料商') {
+    formData.append('traceability_code', this.tracedata.traceability_code)
+  }
+
+  switch (this.userType) {
+    case '原料商':
+      formData.append('arg1', this.tracedata.Farmer_input.Fa_fruitName)
+      formData.append('arg2', this.tracedata.Farmer_input.Fa_origin)
+      formData.append('arg3', this.tracedata.Farmer_input.Fa_plantTime)
+      formData.append('arg4', this.tracedata.Farmer_input.Fa_pickingTime)
+      formData.append('arg5', this.tracedata.Farmer_input.Fa_farmerName)
+      break
+    case '工厂':
+      formData.append('arg1', this.tracedata.Factory_input.Fac_productName)
+      formData.append('arg2', this.tracedata.Factory_input.Fac_productionbatch)
+      formData.append('arg3', this.tracedata.Factory_input.Fac_productionTime)
+      formData.append('arg4', this.tracedata.Factory_input.Fac_factoryName)
+      formData.append('arg5', this.tracedata.Factory_input.Fac_contactNumber)
+      break
+    case '运输司机':
+      formData.append('arg1', this.tracedata.Driver_input.Dr_name)
+      formData.append('arg2', this.tracedata.Driver_input.Dr_age)
+      formData.append('arg3', this.tracedata.Driver_input.Dr_phone)
+      formData.append('arg4', this.tracedata.Driver_input.Dr_carNumber)
+      formData.append('arg5', this.tracedata.Driver_input.Dr_transport)
+      break
+    case '商店':
+      formData.append('arg1', this.tracedata.Shop_input.Sh_storeTime)
+      formData.append('arg2', this.tracedata.Shop_input.Sh_sellTime)
+      formData.append('arg3', this.tracedata.Shop_input.Sh_shopName)
+      formData.append('arg4', this.tracedata.Shop_input.Sh_shopAddress)
+      formData.append('arg5', this.tracedata.Shop_input.Sh_shopPhone)
+      break
+  }
+
+  uplink(formData).then(res => {
+    loading.close()
+    if (res.code === 200) {
+      this.$message({
+        message: '上链成功，交易ID：' + res.txid + '\n溯源码：' + res.traceability_code,
+        type: 'success'
       })
-      var formData = new FormData()
-      formData.append('traceability_code', this.tracedata.traceability_code)
-      // 根据不同的用户给arg1、arg2、arg3..赋值,
-      switch (this.userType) {
-        case '原料商':
-          formData.append('arg1', this.tracedata.Farmer_input.Fa_fruitName)
-          formData.append('arg2', this.tracedata.Farmer_input.Fa_origin)
-          formData.append('arg3', this.tracedata.Farmer_input.Fa_plantTime)
-          formData.append('arg4', this.tracedata.Farmer_input.Fa_pickingTime)
-          formData.append('arg5', this.tracedata.Farmer_input.Fa_farmerName)
-          break
-        case '工厂':
-          formData.append('arg1', this.tracedata.Factory_input.Fac_productName)
-          formData.append('arg2', this.tracedata.Factory_input.Fac_productionbatch)
-          formData.append('arg3', this.tracedata.Factory_input.Fac_productionTime)
-          formData.append('arg4', this.tracedata.Factory_input.Fac_factoryName)
-          formData.append('arg5', this.tracedata.Factory_input.Fac_contactNumber)
-          break
-        case '运输司机':
-          formData.append('arg1', this.tracedata.Driver_input.Dr_name)
-          formData.append('arg2', this.tracedata.Driver_input.Dr_age)
-          formData.append('arg3', this.tracedata.Driver_input.Dr_phone)
-          formData.append('arg4', this.tracedata.Driver_input.Dr_carNumber)
-          formData.append('arg5', this.tracedata.Driver_input.Dr_transport)
-          break
-        case '商店':
-          formData.append('arg1', this.tracedata.Shop_input.Sh_storeTime)
-          formData.append('arg2', this.tracedata.Shop_input.Sh_sellTime)
-          formData.append('arg3', this.tracedata.Shop_input.Sh_shopName)
-          formData.append('arg4', this.tracedata.Shop_input.Sh_shopAddress)
-          formData.append('arg5', this.tracedata.Shop_input.Sh_shopPhone)
-          break
-      }
-      uplink(formData).then(res => {
-        if (res.code === 200) {
-          loading.close()
-          this.$message({
-            message: '上链成功，交易ID：' + res.txid + '\n溯源码：' + res.traceability_code,
-            type: 'success'
-          })
-        } else {
-          loading.close()
-          this.$message({
-            message: '上链失败',
-            type: 'error'
-          })
-        }
-      }).catch(err => {
-        loading.close()
-        console.log(err)
+    } else {
+      this.$message({
+        message: '上链失败',
+        type: 'error'
       })
     }
-  }
+  }).catch(err => {
+    loading.close()
+    console.log(err)
+  })
+}
 }
 
 </script>
