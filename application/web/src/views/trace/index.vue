@@ -2,7 +2,7 @@
   <div class="trace-container">
     <el-input v-model="input" placeholder="请输入溯源码查询" style="width: 300px;margin-right: 15px;" />
     <el-button type="primary" plain @click="FruitInfo"> 查询 </el-button>
-    <el-button type="success" plain @click="AllFruitInfo"> 获取所有农产品信息 </el-button>
+    <el-button type="success" plain @click="AllFruitInfo"> 获取所有农药信息 </el-button>
     <el-table
       :data="tracedata"
       style="width: 100%"
@@ -10,20 +10,20 @@
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
-            <div><span class="trace-text" style="color: #67C23A;">农产品信息</span></div>
-            <el-form-item label="农产品名称：">
+            <div><span class="trace-text" style="color: #67C23A;">农药信息</span></div>
+            <el-form-item label="原料名称：">
               <span>{{ props.row.farmer_input.fa_fruitName }}</span>
             </el-form-item>
-            <el-form-item label="产地：">
+            <el-form-item label="原料产地/性质：">
               <span>{{ props.row.farmer_input.fa_origin }}</span>
             </el-form-item>
-            <el-form-item label="种植时间：">
+            <el-form-item label="生产时间：">
               <span>{{ props.row.farmer_input.fa_plantTime }}</span>
             </el-form-item>
-            <el-form-item label="采摘时间：">
+            <el-form-item label="出库时间：">
               <span>{{ props.row.farmer_input.fa_pickingTime }}</span>
             </el-form-item>
-            <el-form-item label="种植户名称：">
+            <el-form-item label="原料商名称：">
               <span>{{ props.row.farmer_input.fa_farmerName }}</span>
             </el-form-item>
             <el-form-item label="区块链交易ID：">
@@ -106,11 +106,11 @@
         prop="traceability_code"
       />
       <el-table-column
-        label="农产品名称"
+        label="原料名称"
         prop="farmer_input.fa_fruitName"
       />
       <el-table-column
-        label="农产品采摘时间"
+        label="原料入库时间"
         prop="farmer_input.fa_pickingTime"
       />
     </el-table>
