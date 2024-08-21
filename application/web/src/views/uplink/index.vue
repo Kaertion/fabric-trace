@@ -150,7 +150,7 @@ export default {
       formData.append('traceability_code', this.tracedata.traceability_code)
       // 根据不同的用户给arg1、arg2、arg3..赋值,
       switch (this.userType) {
-        case '种植户':
+        case '原料商':
           formData.append('arg1', this.tracedata.Farmer_input.Fa_fruitName)
           formData.append('arg2', this.tracedata.Farmer_input.Fa_origin)
           formData.append('arg3', this.tracedata.Farmer_input.Fa_plantTime)
