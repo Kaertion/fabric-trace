@@ -14,13 +14,13 @@
             <el-form-item label="原料名称：">
               <span>{{ props.row.farmer_input.fa_fruitName }}</span>
             </el-form-item>
-            <el-form-item label="原料产地/性质：">
+            <el-form-item label="原料产地：">
               <span>{{ props.row.farmer_input.fa_origin }}</span>
             </el-form-item>
             <el-form-item label="生产时间：">
               <span>{{ props.row.farmer_input.fa_plantTime }}</span>
             </el-form-item>
-            <el-form-item label="出库时间：">
+            <el-form-item label="入库时间：">
               <span>{{ props.row.farmer_input.fa_pickingTime }}</span>
             </el-form-item>
             <el-form-item label="原料商名称：">
