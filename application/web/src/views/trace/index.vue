@@ -110,7 +110,7 @@
         prop="farmer_input.fa_fruitName"
       />
       <el-table-column
-        label="原料入库时间"
+        label="出库时间"
         prop="farmer_input.fa_pickingTime"
       />
     </el-table>
